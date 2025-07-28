@@ -1,10 +1,10 @@
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
-const supabase = createClient()
 
 export async function GET() {
   try {
     console.log('API called - attempting Supabase query...')
+    const supabase = await createClient()
     const { data, error } = await supabase
       .from('status')
       .select('*')
@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
   console.log('POST request received with data:', { label, angle })
   console.log("angle type:", typeof angle)
   console.log("label type:", typeof label)
+  const supabase = await createClient()
   const { error } = await supabase
     .from('status')
     .update({ label })
