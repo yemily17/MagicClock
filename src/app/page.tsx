@@ -7,7 +7,7 @@ export default function Home() {
   const [angle, setAngle] = useState('')
 
   useEffect(() => {
-    fetch('/api/location')
+    fetch('/api/configure')
       .then(res => res.json())
       .then(data => {
         setLabel(data.label)
@@ -15,8 +15,8 @@ export default function Home() {
       })
   }, [])
 
-  const updateLocation = async () => {
-    await fetch('/api/location', {
+  const updateConfig = async () => {
+    await fetch('/api/configure', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ label, angle })
@@ -34,7 +34,7 @@ export default function Home() {
         <label>Servo Angle:</label>
         <input value={angle} onChange={e => setAngle(e.target.value)} className="border ml-2" />
       </div>
-      <button onClick={updateLocation} className="bg-blue-500 text-white px-4 py-2 mt-2">Update</button>
+      <button onClick={updateConfig} className="bg-blue-500 text-white px-4 py-2 mt-2">Update</button>
     </main>
   )
 }

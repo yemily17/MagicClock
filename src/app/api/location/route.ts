@@ -6,7 +6,7 @@ export async function GET() {
     console.log('API called - attempting Supabase query...')
     const supabase = await createClient()
     const { data, error } = await supabase
-      .from('status')
+      .from('mappings')
       .select('*')
       .single()
 
