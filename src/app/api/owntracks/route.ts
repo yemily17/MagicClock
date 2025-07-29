@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
-    const body = request.body;
+    const body = await request.json();
 
   // Optional: log what OwnTracks sends
   console.log("OwnTracks update:", JSON.stringify(body, null, 2));
@@ -21,8 +21,7 @@ const supabase = await createClient()
 
   if (error) return NextResponse.json({ error }, { status: 500 })
   return NextResponse.json({ ok: true })
-}
+  }
 
-    // if (error) return NextResponse.json({ error }, { status: 500 })
   return NextResponse.json({ ok: true })
 }
