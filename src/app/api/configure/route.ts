@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   console.log("label type:", typeof label)
   const supabase = await createClient()
   const { error } = await supabase
-    .from('status')
+    .from('mappings')
     .update({ label })
     .eq('angle', angle)
 
