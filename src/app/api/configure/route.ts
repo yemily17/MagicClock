@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Fetch current configuration
 export async function GET() {
   try {
     console.log('API called - attempting Supabase query...')
@@ -21,17 +22,17 @@ export async function GET() {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-
+//update configuration
 export async function POST(request: NextRequest) {
-  const { label, angle } = await request.json()
-  console.log('POST request received with data:', { label, angle })
-  console.log("angle type:", typeof angle)
+  const { label, position } = await request.json()
+  console.log('POST request received with data:', { label, position })
+  console.log("position type:", typeof position)
   console.log("label type:", typeof label)
   const supabase = await createClient()
   const { error } = await supabase
     .from('mappings')
     .update({ label })
-    .eq('angle', angle)
+    .eq('position', position)
 
   if (error) return NextResponse.json({ error }, { status: 500 })
   return NextResponse.json({ ok: true })

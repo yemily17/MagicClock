@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [label, setLabel] = useState('')
-  const [angle, setAngle] = useState('')
+  const [position, setPosition] = useState('')
 
   useEffect(() => {
     fetch('/api/configure')
       .then(res => res.json())
       .then(data => {
         setLabel(data.label)
-        setAngle(data.angle)
+        setPosition(data.position)
       })
   }, [])
 
@@ -19,7 +19,7 @@ export default function Home() {
     await fetch('/api/configure', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ label, angle })
+      body: JSON.stringify({ label, position })
     })
   }
 
@@ -31,8 +31,8 @@ export default function Home() {
         <input value={label} onChange={e => setLabel(e.target.value)} className="border ml-2" />
       </div>
       <div className="mb-2">
-        <label>Servo Angle:</label>
-        <input value={angle} onChange={e => setAngle(e.target.value)} className="border ml-2" />
+        <label>Servo Position:</label>
+        <input value={position} onChange={e => setPosition(e.target.value)} className="border ml-2" />
       </div>
       <button onClick={updateConfig} className="bg-blue-500 text-white px-4 py-2 mt-2">Update</button>
     </main>
