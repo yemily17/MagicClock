@@ -4,42 +4,36 @@ import { NextRequest, NextResponse } from 'next/server'
 
 
 export async function POST(request: NextRequest) {
-    const body = await request.json();
+  const rawBody = await request.text();
 
-  console.log("OwnTracks update:", JSON.stringify(body, null, 2));
+  console.log("OwnTracks POST content-type:",
+    request.headers.get("content-type"));
+  console.log("OwnTracks POST raw body:",
+    JSON.stringify(rawBody));
 
-  // Entering or leaving region
-  if (body._type === 'transition') {
-    console.log('Transition event received:', body);
-    const location = body.desc; // this is the region name you defined
-    const event = body.event;   // 'enter' or 'leave'
-    const user = body.tid;      // short user ID (2-character ID from OwnTracks)
-const supabase = await createClient()
-
-  const { error } = await supabase
-    .from('current_location')
-    .insert([{ user, location, event }])
-
-  if (error) return NextResponse.json({ error }, { status: 500 })
-  return NextResponse.json({ ok: true })
+  if (!rawBody.trim()) {
+    return Response.json(
+      { error: "Empty request body" },
+      { status: 400 }
+    );
   }
 
-  // Manual sent location
-  if (body._type === 'location') {
-    console.log('Location event received:', body);
-    const location = body.poi; // location name
-    const user = body.tid;      // short user ID (2-character ID from OwnTracks)
+  let body;
 
-const supabase = await createClient()
-  const { error } = await supabase
-    .from('current_location')
-    .insert([{ user, location, event: 'custom' }])
-
-  if (error) return NextResponse.json({ error }, { status: 500 })
-  return NextResponse.json({ ok: true })
+  try {
+    body = JSON.parse(rawBody);
+  } catch (error) {
+    console.error("Invalid OwnTracks JSON:", error);
+    return Response.json(
+      { error: "Invalid JSON body" },
+      { status: 400 }
+    );
   }
 
-  return NextResponse.json({ ok: true })
+  console.log("Parsed OwnTracks body:", body);
+
+  // Keep the rest of your existing POST handler here.
+  // Use the parsed `body` variable; do not call request.json() again.
 }
 
 export async function GET() {
